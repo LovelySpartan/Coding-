@@ -1,0 +1,89 @@
+def transition(*, tracker, id, enter):
+    #id not 3 characters
+    if len(id) != 3:
+        return 901
+    #enter floor not a number
+    if not enter[0].isnumeric():
+        return 902
+    #enter floor less than 1
+    if int(enter[0]) < 1:
+        return 903
+    #enter floor greater than 3
+    if int(enter[0]) > 3:
+        return 904
+    #enter room not a number
+    if not enter[2].isnumeric():
+        return 905
+    #enter room greater than 4
+    if int(enter[2]) > 4:
+        return 906
+    #set enter floor and room
+    enter_floor = int(enter[0])-1
+    enter_room = int(enter[2])-1
+    #set leave floor and room (room -1 is outside building)
+    leave_floor = 0
+    leave_room = -1
+    for floor in range(3):
+        for room in range(4):
+            if id in tracker[floor][room]:
+                leave_floor = floor
+                leave_room = room
+    valid_move = [
+    [1, 0, 1, 1],
+    [1, 1, 1, 0],
+    [1, 4, 2, 4],
+    [1, 1, 1, 2],
+    [1, 1, 1, 3],
+    [1, 1, 1, 4],
+    [1, 2, 1, 1],
+    [1, 2, 1, 3],
+    [1, 2, 1, 4],
+    [1, 3, 1, 1],
+    [1, 3, 1, 2],
+    [1, 3, 1, 4],
+    [1, 4, 1, 1],
+    [1, 4, 1, 2],
+    [1, 4, 1, 3],
+    [2, 4, 1, 4],
+    [2, 2, 3, 2],
+    [2, 1, 2, 2],
+    [2, 1, 2, 3],
+    [2, 1, 2, 4],
+    [2, 2, 2, 1],
+    [2, 2, 2, 3],
+    [2, 2, 2, 4],
+    [2, 3, 2, 1],
+    [2, 3, 2, 2],
+    [2, 3, 2, 4],
+    [2, 4, 2, 1],
+    [2, 4, 2, 2],
+    [2, 4, 2, 3],
+    [3, 2, 2, 2],
+    [3, 1, 3, 2],
+    [3, 1, 3, 3],
+    [3, 1, 3, 4],
+    [3, 2, 3, 1],
+    [3, 2, 3, 3],
+    [3, 2, 3, 4],
+    [3, 3, 3, 1],
+    [3, 3, 3, 2],
+    [3, 3, 3, 4],
+    [3, 4, 3, 1],
+    [3, 4, 3, 2],
+    [3, 4, 3, 3],
+    ]
+    is_valid_move = False
+    for x in valid_move:
+        if leave_floor == x[0]-1 and leave_room == x[1]-1 and enter_floor == x[2]-1
+and enter_room == x[3]-1:
+            is_valid_move = True
+    if is_valid_move:
+        #only remove element if person is inside the building (i.e. not outside)
+        if not (leave_floor == 0 and leave_room == -1):
+            tracker[leave_floor][leave_room].remove(id)
+        #only add element if person stays in buliding
+        if not (enter_floor == 0 and enter_room == -1):
+            tracker[enter_floor][enter_room].append(id)
+    else:
+        return 999
+    return 0
